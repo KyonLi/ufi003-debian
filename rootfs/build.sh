@@ -22,6 +22,9 @@ umount debian/dev/pts
 umount debian/dev
 umount debian/sys
 
+echo -e "\n\nNow you can make additional modifications to rootfs.\nPress ENTER to continue"
+head -n 1 >/dev/null
+
 #dd if=/dev/zero of=debian-ufi003.img bs=1M count=$(( $(df -m --output=used debian | tail -1 | awk '{print $1}') + 100 ))
 dd if=/dev/zero of=debian-ufi003.img bs=1M count=$(( $(du -ms debian | cut -f1) + 100 ))
 mkfs.ext4 -L rootfs debian-ufi003.img
