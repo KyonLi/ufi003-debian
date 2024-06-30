@@ -35,5 +35,5 @@ sed -i 's/^.\?ALGO=.*$/ALGO=lzo-rle/g' /etc/default/zramswap
 sed -i 's/^.\?PERCENT=.*$/PERCENT=300/g' /etc/default/zramswap
 sed -i 's/mirrors.tuna.tsinghua.edu.cn/deb.debian.org/g' /etc/apt/sources.list
 rm -rf /etc/ssh/ssh_host_* /var/lib/apt/lists
-apt clean all
+apt clean
 exit
