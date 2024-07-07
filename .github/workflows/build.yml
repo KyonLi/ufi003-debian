@@ -1,0 +1,44 @@
+name: Build debian
+on: push
+
+jobs:
+  build:
+    name: Build debian
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install debootstrap binfmt-support qemu-user-static android-sdk-libsparse-utils mkbootimg
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare repository
+        run: git config --global --add safe.directory "$(pwd)"
+
+      - name: Build
+        run: |
+          cd rootfs
+          sudo ./build.sh
+
+      - name: Generate release tag
+        id: version
+        run: |
+          NAME=$(echo "Debian $(cat rootfs/debian_version)")
+          TAG_NAME=$(cat rootfs/debian_version)-${{ github.run_number }}
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+          echo -e "$(cat rootfs/info.md)\n\n$(git log -1 --format=%s)" > release_notes.md
+          echo "NAME=$NAME" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.version.outputs.NAME }}
+          body_path: release_notes.md
+          tag_name: ${{ steps.version.outputs.TAG_NAME }}
+          files: |
+            rootfs/rootfs.img.xz
+            kernel/*.img
