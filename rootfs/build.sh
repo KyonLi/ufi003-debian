@@ -49,7 +49,6 @@ mount debian-ufi003.img build
 rsync -aH debian/ build/
 umount build
 img2simg debian-ufi003.img rootfs.img
-xz rootfs.img
 rm -rf debian-ufi003.img debian build > /dev/null 2>&1
 
 cd ../kernel
