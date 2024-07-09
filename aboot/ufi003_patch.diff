@@ -1,0 +1,32 @@
+diff --git a/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts b/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts
+index 32a32868..b743317a 100644
+--- a/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts
++++ b/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts
+@@ -72,6 +72,27 @@
+ 		};
+ 	};
+ 
++	thwc-ufi003 {
++		model = "UFI003 4G Modem Stick";
++		compatible = "thwc,ufi003";
++
++		/*
++		 * Use this node with lk1st:
++		 * make ... LK2ND_BUNDLE_DTB="msm8916-512mb-mtp.dtb" LK2ND_COMPATIBLE="thwc,ufi003"
++		 */
++
++		lk2nd,dtb-files = "msm8916-thwc-ufi003";
++
++		gpio-keys {
++			compatible = "gpio-keys";
++			edl {
++				/* The EDL button is the only one available on UFI003 */
++				lk2nd,code = <KEY_VOLUMEDOWN>;
++				gpios = <&tlmm 37 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
++			};
++		};
++	};
++
+ 	yiming-uz801-v3 {
+ 		model = "uz801 v3.0 4G Modem Stick";
+ 		compatible = "yiming,uz801-v3";
