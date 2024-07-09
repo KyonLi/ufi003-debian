@@ -1,9 +1,9 @@
 #/bin/bash
 
 DIST=bookworm
-K_IMAGE_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/5.18.0-3/Image.gz"
-K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/5.18.0-3/linux-image-5.18.0-handsomehack-g533401025051_5.18.0-handsomehack-g533401025051-1_arm64.deb"
-K_HEADERS_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/5.18.0-3/linux-headers-5.18.0-handsomehack-g533401025051_5.18.0-handsomehack-g533401025051-1_arm64.deb"
+K_IMAGE_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.0-6/Image.gz"
+K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.0-6/linux-image-6.6.0-msm8916-g262af7ff27e2_6.6.0-g262af7ff27e2-1_arm64.deb"
+K_HEADERS_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.0-6/linux-headers-6.6.0-msm8916-g262af7ff27e2_6.6.0-g262af7ff27e2-1_arm64.deb"
 
 if [ `id -u` -ne 0 ]
   then echo "Please run as root"
@@ -16,7 +16,6 @@ wget -P ../kernel "$K_HEADERS_DEB_URL"
 
 mkdir debian build
 debootstrap --arch=arm64 --foreign $DIST debian https://deb.debian.org/debian/
-# cp /usr/bin/qemu-aarch64-static debian/usr/bin/
 LANG=C LANGUAGE=C LC_ALL=C chroot debian /debootstrap/debootstrap --second-stage
 cp ../deb-pkgs/*.deb ../kernel/*.deb chroot.sh debian/tmp/
 mount --bind /proc debian/proc

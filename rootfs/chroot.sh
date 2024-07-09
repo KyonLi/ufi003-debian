@@ -34,6 +34,7 @@ sed -i 's/^.\?PermitRootLogin.*$/PermitRootLogin yes/g' /etc/ssh/sshd_config
 sed -i 's/^.\?ALGO=.*$/ALGO=lzo-rle/g' /etc/default/zramswap
 sed -i 's/^.\?PERCENT=.*$/PERCENT=300/g' /etc/default/zramswap
 cat <<EOF > /tmp/info.md
+- 内核版本：$(uname -r)
 - 默认用户名：root
 - 默认密码：$PASSWORD
 - WiFi名称：openstick-failsafe
