@@ -1,9 +1,9 @@
 #/bin/bash
 
 DIST=bookworm
-K_IMAGE_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.0-6/Image.gz"
-K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.0-6/linux-image-6.6.0-msm8916-g262af7ff27e2_6.6.0-g262af7ff27e2-1_arm64.deb"
-K_HEADERS_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.0-6/linux-headers-6.6.0-msm8916-g262af7ff27e2_6.6.0-g262af7ff27e2-1_arm64.deb"
+K_IMAGE_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.38-1/Image.gz"
+K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.38-1/linux-image-6.6.38-msm8916-g7575c9d9bd67_6.6.38-g7575c9d9bd67-1_arm64.deb"
+K_HEADERS_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.38-1/linux-headers-6.6.38-msm8916-g7575c9d9bd67_6.6.38-g7575c9d9bd67-1_arm64.deb"
 
 if [ `id -u` -ne 0 ]
   then echo "Please run as root"

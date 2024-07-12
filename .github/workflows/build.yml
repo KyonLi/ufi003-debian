@@ -30,7 +30,7 @@ jobs:
           TAG_NAME=$(cat rootfs/debian_version)-${{ github.run_number }}
           git tag $TAG_NAME
           git push origin $TAG_NAME
-          echo -e "$(cat rootfs/info.md)\n\n$(git log -1 --format=%s)" > release_notes.md
+          echo -e "- Bootloader: $(cat aboot/ver.txt)\n$(cat rootfs/info.md)\n\n$(git log -1 --format=%B)" > release_notes.md
           echo "NAME=$NAME" >> $GITHUB_OUTPUT
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
 
@@ -41,5 +41,6 @@ jobs:
           body_path: release_notes.md
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
           files: |
-            rootfs/rootfs.img.xz
+            aboot/emmc_appsboot-test-signed.mbn
             kernel/*.img
+            rootfs/rootfs.img.xz
