@@ -3,6 +3,7 @@
 LANG_TARGET=en_US.UTF-8
 PASSWORD=1234
 NAME=ufi003
+PARTUUID=a7ab80e8-e9d1-e8cd-f157-93f69b1d141e
 
 cat <<EOF > /etc/apt/sources.list
 deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
@@ -16,6 +17,11 @@ deb http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-f
 
 deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
 # deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+EOF
+
+cat <<EOF > /etc/fstab
+PARTUUID=$PARTUUID / ext4 defaults,noatime,commit=600,errors=remount-ro 0 1
+tmpfs /tmp tmpfs defaults,nosuid 0 0
 EOF
 
 apt update
@@ -37,10 +43,10 @@ sed -i 's/^.\?PERCENT=.*$/PERCENT=300/g' /etc/default/zramswap
 initrd_name=$(basename /boot/initrd.img*)
 cat <<EOF > /tmp/info.md
 - 内核版本：${initrd_name#*-}
-- 默认用户名：root
-- 默认密码：$PASSWORD
-- WiFi名称：openstick-failsafe
-- WiFi密码：12345678
+- 默认用户名: root
+- 默认密码: $PASSWORD
+- WiFi名称: openstick-failsafe
+- WiFi密码: 12345678
 EOF
 rm -rf /etc/ssh/ssh_host_* /var/lib/apt/lists
 apt clean

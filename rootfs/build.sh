@@ -4,6 +4,7 @@ DIST=bookworm
 K_IMAGE_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.38-1/Image.gz"
 K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.38-1/linux-image-6.6.38-msm8916-g7575c9d9bd67_6.6.38-g7575c9d9bd67-1_arm64.deb"
 K_HEADERS_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.6.38-1/linux-headers-6.6.38-msm8916-g7575c9d9bd67_6.6.38-g7575c9d9bd67-1_arm64.deb"
+UUID=62ae670d-01b7-4c7d-8e72-60bcd00410b7
 
 if [ `id -u` -ne 0 ]
   then echo "Please run as root"
@@ -38,12 +39,7 @@ head -n 1 >/dev/null
 
 #dd if=/dev/zero of=debian-ufi003.img bs=1M count=$(( $(df -m --output=used debian | tail -1 | awk '{print $1}') + 100 ))
 dd if=/dev/zero of=debian-ufi003.img bs=1M count=$(( $(du -ms debian | cut -f1) + 100 ))
-mkfs.ext4 -L rootfs debian-ufi003.img
-UUID=$(blkid -s UUID -o value debian-ufi003.img)
-cat <<EOF > debian/etc/fstab
-UUID=$UUID / ext4 defaults,noatime,commit=600,errors=remount-ro 0 1
-tmpfs /tmp tmpfs defaults,nosuid 0 0
-EOF
+mkfs.ext4 -L rootfs -U $UUID debian-ufi003.img
 mount debian-ufi003.img build
 rsync -aH debian/ build/
 umount build
