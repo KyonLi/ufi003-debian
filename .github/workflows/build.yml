@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: |
           cd rootfs
-          sudo ./build.sh
+          sudo bash build.sh
           sudo xz rootfs.img
 
       - name: Generate release tag
