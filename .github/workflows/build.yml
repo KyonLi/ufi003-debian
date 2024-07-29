@@ -9,7 +9,7 @@ jobs:
       - name: Prepare
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install debootstrap binfmt-support qemu-user-static android-sdk-libsparse-utils mkbootimg
+          sudo apt-get -y install debootstrap binfmt-support qemu-user-static android-sdk-libsparse-utils
 
       - name: Checkout
         uses: actions/checkout@v4

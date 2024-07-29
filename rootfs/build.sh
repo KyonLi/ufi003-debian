@@ -1,9 +1,11 @@
 #/bin/bash
 
 DIST=bookworm
-K_IMAGE_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.0-1/Image.gz"
-K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.0-1/linux-image-6.10.0-gb7e4049f0eb1_6.10.0-gb7e4049f0eb1-1_arm64.deb"
-K_HEADERS_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.0-1/linux-headers-6.10.0-gb7e4049f0eb1_6.10.0-gb7e4049f0eb1-1_arm64.deb"
+BOOT_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.2-1/boot.img"
+BOOT_NO_MODEM_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.2-1/boot-no-modem.img"
+BOOT_NO_MODEM_OC_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.2-1/boot-no-modem-oc.img"
+K_IMAGE_DEB_URL="https://github.com/KyonLi/ufi003-kernel/releases/download/6.10.2-1/linux-image-6.10.2-g8ffeadb57e59_6.10.2-g8ffeadb57e59-1_arm64.deb"
+K_DEV_URL="https://github.com/KyonLi/ufi003-kernel/releases/tag/6.10.2-1"
 UUID=62ae670d-01b7-4c7d-8e72-60bcd00410b7
 
 if [ `id -u` -ne 0 ]
@@ -11,28 +13,30 @@ if [ `id -u` -ne 0 ]
   exit
 fi
 
-wget -P ../kernel "$K_IMAGE_URL"
+rm -rf ../kernel/* > /dev/null 2>&1
+wget -P ../kernel "$BOOT_URL"
+wget -P ../kernel "$BOOT_NO_MODEM_URL"
+wget -P ../kernel "$BOOT_NO_MODEM_OC_URL"
 wget -P ../kernel "$K_IMAGE_DEB_URL"
-wget -P ../kernel "$K_HEADERS_DEB_URL"
 
 mkdir debian build
 debootstrap --arch=arm64 --foreign $DIST debian https://deb.debian.org/debian/
 LANG=C LANGUAGE=C LC_ALL=C chroot debian /debootstrap/debootstrap --second-stage
-cp ../deb-pkgs/*.deb ../kernel/*.deb chroot.sh debian/tmp/
+cp ../deb-pkgs/*.deb ../kernel/linux-image-*.deb chroot.sh debian/tmp/
+mv ../kernel/linux-image-*.deb debian/tmp/
 mount --bind /proc debian/proc
 mount --bind /dev debian/dev
 mount --bind /dev/pts debian/dev/pts
 mount --bind /sys debian/sys
 LANG=C LANGUAGE=C LC_ALL=C chroot debian /tmp/chroot.sh
-mv debian/tmp/info.md ./
-rm -rf debian/tmp/* debian/root/.bash_history > /dev/null 2>&1
-cp debian/etc/debian_version ./
-cp debian/boot/initrd.img* ../kernel/initrd.img
-cp debian/usr/lib/linux-image*/qcom/*ufi003*.dtb ../kernel/
 umount debian/proc
 umount debian/dev/pts
 umount debian/dev
 umount debian/sys
+cp debian/etc/debian_version ./
+mv debian/tmp/info.md ./
+echo -e "\n🔗 [linux-headers & linux-libc-dev]($K_DEV_URL)" >> info.md
+rm -rf debian/tmp/* debian/root/.bash_history > /dev/null 2>&1
 
 echo -e "\n\nNow you can make additional modifications to rootfs.\nPress ENTER to continue"
 head -n 1 >/dev/null
@@ -45,7 +49,3 @@ rsync -aH debian/ build/
 umount build
 img2simg debian-ufi003.img rootfs.img
 rm -rf debian-ufi003.img debian build > /dev/null 2>&1
-
-cd ../kernel
-./build-boot-img.sh
-rm -rf initrd.img *.dtb *.deb Image.gz > /dev/null 2>&1
