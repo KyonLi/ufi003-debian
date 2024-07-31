@@ -35,7 +35,8 @@ umount debian/dev
 umount debian/sys
 cp debian/etc/debian_version ./
 mv debian/tmp/info.md ./
-echo -e "\n🔗 [linux-headers & linux-libc-dev]($K_DEV_URL)" >> info.md
+echo >> info.md
+echo "🔗 [linux-headers & linux-libc-dev]($K_DEV_URL)" >> info.md
 rm -rf debian/tmp/* debian/root/.bash_history > /dev/null 2>&1
 
 #echo -e "\n\nNow you can make additional modifications to rootfs.\nPress ENTER to continue"
