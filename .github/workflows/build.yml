@@ -22,7 +22,7 @@ jobs:
         run: |
           cd rootfs
           sudo ./build.sh
-          sudo xz rootfs.img
+          sudo xz -T0 rootfs.img
 
       - name: Build bootloader
         run: |
