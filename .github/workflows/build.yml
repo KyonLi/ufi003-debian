@@ -10,6 +10,7 @@ jobs:
         run: |
           sudo apt-get -y update
           sudo apt-get -y install debootstrap binfmt-support qemu-user-static android-sdk-libsparse-utils
+          sudo apt-get -y install gcc-arm-none-eabi device-tree-compiler python3-pycryptodome
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,11 +18,16 @@ jobs:
       - name: Prepare repository
         run: git config --global --add safe.directory "$(pwd)"
 
-      - name: Build
+      - name: Build rootfs
         run: |
           cd rootfs
           sudo ./build.sh
           sudo xz rootfs.img
+
+      - name: Build bootloader
+        run: |
+          cd aboot
+          ./build.sh
 
       - name: Generate release tag
         id: version

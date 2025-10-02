@@ -1,5 +1,5 @@
 diff --git a/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts b/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts
-index 32a32868..b743317a 100644
+index e0f6b56f..e010acca 100644
 --- a/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts
 +++ b/lk2nd/device/dts/msm8916/msm8916-512mb-mtp.dts
 @@ -72,6 +72,27 @@
@@ -30,3 +30,17 @@ index 32a32868..b743317a 100644
  	yiming-uz801-v3 {
  		model = "uz801 v3.0 4G Modem Stick";
  		compatible = "yiming,uz801-v3";
+diff --git a/lk2nd/scripts/describe-version.sh b/lk2nd/scripts/describe-version.sh
+index 14027df6..b22eb441 100755
+--- a/lk2nd/scripts/describe-version.sh
++++ b/lk2nd/scripts/describe-version.sh
+@@ -12,7 +12,8 @@
+ git_dirty() {
+ 	if [ -n "$(git status --porcelain)" ]
+ 	then
+-		echo "-dirty"
++		# echo "-dirty"
++		:
+ 	fi
+ }
+ 
